@@ -21,7 +21,7 @@ mydb = mysql.connector.connect(
 # Pupil's endpoints
 # -----------------------------------------------
 @app.route('/addPupil/<name>/<surname>/<pesel>/<class_name>') # localhost:3000/addPupil/Ewa/Zalewska/1234/2PUp
-def add_pupil(name, surname, pesel, class_name):
+def addPupil(name, surname, pesel, class_name):
     mycursor = mydb.cursor()
     newPupil = "INSERT INTO pupil (name, surname, pesel, class) VALUES (%s, %s, %s, %s)"
     newPupilValues = (name, surname, pesel, class_name)
@@ -167,8 +167,8 @@ def removeAllSubjects():
 
 # Pupil_Subject's endpoints
 # -----------------------------------------------
-@app.route('/addPupilSubject/<pupil_id>/<subject_id>')
-def add_pupilsubject(pupil_id, subject_id):
+@app.route('/addPupilSubject/<pupil_id>/<subject_id>') # localhost:3000/addPupilSubject/1/1
+def addPupilSubject(pupil_id, subject_id):
     mycursor = mydb.cursor()
     newPupilSubject = "INSERT INTO Pupil_Subject (pupil_id, subject_id) VALUES (%s, %s)"
     newPupilSubjectValues = (pupil_id, subject_id)
@@ -179,7 +179,7 @@ def add_pupilsubject(pupil_id, subject_id):
         IMPORTANT= "Pupil with id " +pupil_id + " added to subject successfully",
     )
 
-@app.route('/showAllPupilsSubjects')
+@app.route('/showAllPupilsSubjects') # localhost:3000/showAllPupilsSubjects
 def showAllPupilsSubjects():
     mycursor = mydb.cursor()
     sql = 'SELECT * FROM Pupil_Subject'
@@ -191,7 +191,7 @@ def showAllPupilsSubjects():
         IMPORTANT='All pupil_subjects showed'
     )
 
-@app.route('/removeAllPupilsSubjects')
+@app.route('/removeAllPupilsSubjects') # localhost:3000/removeAllPupilsSubjects
 def removeAllPupilsSubjects():
     mycursor = mydb.cursor()
     sqlQuery = "DELETE FROM Pupil_Subject"
@@ -205,7 +205,7 @@ def removeAllPupilsSubjects():
 
 # Pupil_Teacher's endpoints
 # -----------------------------------------------
-@app.route('/addPupilTeacher/<pupil_id>/<teacher_id>')
+@app.route('/addPupilTeacher/<pupil_id>/<teacher_id>') # localhost:3000/addPupilTeacher/1/1
 def addPupilTeacher(pupil_id, teacher_id):
     mycursor = mydb.cursor()
     newPupilteacher = "INSERT INTO Pupil_Teacher (pupil_id, teacher_id) VALUES (%s, %s)"
@@ -217,7 +217,7 @@ def addPupilTeacher(pupil_id, teacher_id):
         IMPORTANT ="Pupil with id "+ pupil_id + " added successfully to teacher"
     )
 
-@app.route('/showAllPupilTeachers')
+@app.route('/showAllPupilTeachers') # localhost:3000/showAllPupilTeachers
 def showAllPupilTeachers():
     mycursor = mydb.cursor()
     sql = 'SELECT * FROM Pupil_Teacher'
@@ -229,7 +229,7 @@ def showAllPupilTeachers():
         IMPORTANT='All Pupil_Teachers showed'
     )
 
-@app.route('/removeAllPupilTeachers')
+@app.route('/removeAllPupilTeachers') # localhost:3000/removeAllPupilTeachers
 def removeAllPupilTeachers():
     mycursor = mydb.cursor()
     sqlQuery = "DELETE FROM Pupil_Teacher"
@@ -241,57 +241,5 @@ def removeAllPupilTeachers():
     )
 # -----------------------------------------------
 
-# @app.route('/removeSubject/<id>')
-# def removeSubject(id):
-#     mycursor = mydb.cursor()
-#     sqlQuery = "DELETE FROM subject WHERE subject_id = (id == %s)"
-#     mycursor.execute(sqlQuery,id)
-#     mydb.commit()
-#     print(mycursor.rowcount, "record deleted")
-#     return jsonify(
-#         IMPORTANT="Subject with id: " + id + " removed succesfully"
-#     )
-
-# @app.route('/removeSubject/<id>')
-# def removeSubject(id):
-#     mycursor = mydb.cursor()
-#     sql = "DELETE FROM Subject WHERE subject_id = %s"
-#     mycursor.execute(sql,id)
-#     mydb.commit()
-#     print(mycursor.rowcount, "record(s) deleted")
-#     return jsonify(
-#         IMPORTANT="Subject " + id + " removed",
-#         responseCode=200
-#     )
-
-
-
-
-
-
-
-# @app.route('/addPupil/<id>/<name>/<surname>/<pesel>/<className>')
-# def add_pupil(id, name, surname, pesel, className):
-#     mycursor = mydb.cursor()
-#     new_pupil = "INSERT INTO pupil (pupil_id, name, surname, pesel, class) SELECT * FROM pupil WHERE pupil_id != {}".format(id)
-#     new_pupil_values = (id, name, surname, pesel, className)
-#     mycursor.execute(new_pupil,selectallif,responseIfidexist, new_pupil_values)   
-#     mydb.commit()
-#     print(mycursor.rowcount, "record inserted.")
-#     return jsonify(
-#         IMPORTANT="User " + name + " " + surname + " added successfully to database",
-#     )
-
-# @app.route('/removeTeacher/<id>')
-# def removeTeacher(id):
-#     mycursor = mydb.cursor()
-#     sqlQuery = "DELETE FROM teacher WHERE teacher_id = '%s'"
-#     mycursor.execute(sqlQuery,id)
-#     mydb.commit()
-#     print(mycursor.rowcount, "record deleted")
-#     return jsonify(
-#         IMPORTANT="Teacher with id: "+ id +" removed succesfully"
-#     )
-
 if __name__ == "__main__":
-    app.run("localhost", 3000, True, {}) # odpalenie serwera (host, port, debug, options)
+    app.run("localhost", 3000, True, {})
