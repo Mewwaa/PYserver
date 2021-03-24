@@ -5,7 +5,7 @@ import mysql.connector
 import requests
 import random
 
-from utils import deleteAllCars, showAllCars
+from utils import deleteAllCars, showAllCars, addNewCar, deleteCarsById
 
 # Jeśli pojawi się błąd przy imporcie to ja użyłam tych komend:
 # pip install Flask
@@ -25,14 +25,12 @@ mydb = mysql.connector.connect(
 # -----------------------------------------------
 @app.route('/addCar/<carname>/<brandname>/<carhp>/<enginecapacity>/<manufacturedate>') # localhost:3000/addCar/Ewa/Mercedes/100/2/2020-09-13
 def addCar(carname, brandname, carhp, enginecapacity,manufacturedate):
-    mycursor = mydb.cursor()
-    newCar = "INSERT INTO CARS (NAME, BRAND, HP, ENGINE_CAPACITY,MANUFACTURE_DATE) VALUES (%s, %s, %s, %s, %s)" 
-    newCarValues = (carname, brandname, carhp, enginecapacity,manufacturedate)
-    mycursor.execute(newCar, newCarValues)   
-    mydb.commit()
-    print(mycursor.rowcount, " record successfully inserted.")
+    results = addNewCar(carname, brandname, carhp, enginecapacity,manufacturedate, mydb)
     return jsonify(
-        IMPORTANT="Car "+ brandname+" added to database.",
+        IMPORTANT="Car "+ brandname +" added successfully to database",
+    )
+    return jsonify(
+        results,
     )
 
 @app.route('/removeAllCars') # localhost:3000/removeAllCars
@@ -50,6 +48,16 @@ def showAllCars():
     results = showAllCars(mydb)
     for x in results:
         print(x)
+    return jsonify(
+        results,
+    )
+
+@app.route('/removeCarById/<id>') # localhost:3000/removePupilById/1
+def removeCarById(id):
+    results = deleteCarsById(id,mydb)
+    return jsonify(
+        IMPORTANT="Car with id "+ id +" removed succesfully"
+    )
     return jsonify(
         results,
     )
