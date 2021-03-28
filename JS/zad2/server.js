@@ -4,156 +4,119 @@ const fs = require("fs-extra");
 const { request, response } = require('express');
 const app = express();
 
-
-
-
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "root",
-    database: 'baza1'
+    database: 'carRentalJs'
 });
 
 
 
-// app.get('/addPupil/:id/:name/:surname/:pesel/:class', function(request, response) {
-//     var sql = "INSERT INTO pupil (pupil_id, name, surname, pesel, class) VALUES (?)";
-//     var values = [request.params.id, request.params.name, request.params.surname, request.params.pesel, request.params.class];
-//     con.query(sql, [values], function(err, result) {
-//         if (err) throw err;
-//         console.log("Number of records inserted: " + result.affectedRows);
-//     });
-//     return response.send('Record succesfully inserted')
-// })
+app.get('/addCar/:carname/:brandname/:carhp/:enginecapacity/:manufacturedate', function(request, response) {
+    var sql = "INSERT INTO CARS (NAME, BRAND, HP, ENGINE_CAPACITY,MANUFACTURE_DATE) VALUES (?)";
+    var values = [request.params.carname, request.params.brandname, request.params.carhp, request.params.enginecapacity, request.params.manufacturedate];
+    con.query(sql, [values], function(err, result) {
+        if (err) throw err;
+        console.log("Number of records inserted: " + result.affectedRows);
+    });
+    return response.send('Car ' + request.params.brandname + ' succesfully inserted')
+})
 
 
-// app.get('/showPupil', function(request, response) {
-//     con.query("SELECT * FROM Pupil", function(err, result, fields) {
-//         if (err) throw err;
-//         console.log(result);
-//     });
-//     return response.send('Record succesfully inserted')
-// })
+app.get('/showCars', function(request, response) {
+    con.query("SELECT * FROM CARS", function(err, result, fields) {
+        if (err) throw err;
+        console.log(result);
+    });
+    return response.send('Record succesfully showed')
+})
 
-// app.get('/addTeacher/:id/:name/:surname/:pesel/:subject', function(request, response) {
-//     var sql = "INSERT INTO Teacher (teacher_id, name, surname, pesel, subject) VALUES (?)";
-//     var values = [request.params.id, request.params.name, request.params.surname, request.params.pesel, request.params.subject];
-//     con.query(sql, [values], function(err, result) {
-//         if (err) throw err;
-//         console.log("Number of records inserted: " + result.affectedRows);
-//     });
-//     return response.send('Record succesfully inserted')
-// })
+app.get('/removeAllCars', function(request, response) {
+    con.query("DELETE FROM cars;", function(err, result, fields) {
+        if (err) throw err;
+        console.log(result);
+    });
+    return response.send('Records succesfully deleted')
+})
 
-// app.get('/showTeacher', function(request, response) {
-//     con.query("SELECT * FROM Teacher", function(err, result, fields) {
-//         if (err) throw err;
-//         console.log(result);
-//     });
-//     return result
-// })
+app.get('/addUser/:name/:surname/:pesel', function(request, response) {
+    var sql = "INSERT INTO USER (NAME, SURNAME, PESEL) VALUES (?)";
+    var values = [request.params.name, request.params.surname, request.params.pesel];
+    con.query(sql, [values], function(err, result) {
+        if (err) throw err;
+        console.log("Number of records inserted: " + result.affectedRows);
+    });
+    return response.send('User ' + request.params.name + request.params.surname + ' succesfully inserted')
+})
 
-// app.get('/addSubject/:id/:name', function(request, response) {
-//     var sql = "INSERT INTO Subject (subject_id, name) VALUES (?)";
-//     var values = [request.params.id, request.params.name];
-//     con.query(sql, [values], function(err, result) {
-//         if (err) throw err;
-//         console.log("Number of records inserted: " + result.affectedRows);
-//     });
-//     return response.send('Record succesfully inserted')
-// })
+app.get('/showAllusers', function(request, response) {
+    con.query("SELECT * FROM USER", function(err, result, fields) {
+        if (err) throw err;
+        console.log(result);
+    });
+    return response.send('Record succesfully showed')
+})
 
-// app.get('/showSubjects', function(request, response) {
-//     con.query("SELECT * FROM Subject", function(err, result, fields) {
-//         if (err) throw err;
-//         console.log(result);
-//     });
-//     return result
-// })
+app.get('/removeAllCars', function(request, response) {
+    con.query("DELETE FROM USER;", function(err, result, fields) {
+        if (err) throw err;
+        console.log(result);
+    });
+    return response.send('Records succesfully deleted')
+})
 
-// app.get('/addGrade/:id/:value/:weight', function(request, response) {
-//     var sql = "INSERT INTO Grade (pupil_id, value, weight) VALUES (?)";
-//     var values = [request.params.id, request.params.value, request.params.weight];
-//     con.query(sql, [values], function(err, result) {
-//         if (err) throw err;
-//         console.log("Number of records inserted: " + result.affectedRows);
-//     });
-//     return response.send('Record succesfully inserted')
-// })
+app.get('/addUser/:name/:surname/:pesel', function(request, response) {
+    var sql = "INSERT INTO USER (NAME, SURNAME, PESEL) VALUES (?)";
+    var values = [request.params.name, request.params.surname, request.params.pesel];
+    con.query(sql, [values], function(err, result) {
+        if (err) throw err;
+        console.log("Number of records inserted: " + result.affectedRows);
+    });
+    return response.send('User ' + request.params.name + request.params.surname + ' succesfully inserted')
+})
 
-// app.get('/showGrades', function(request, response) {
-//     con.query("SELECT * FROM Grade", function(err, result, fields) {
-//         if (err) throw err;
-//         console.log(result);
-//     });
-//     return response.send('R')
-// })
+app.get('/showAllusers', function(request, response) {
+    con.query("SELECT * FROM USER", function(err, result, fields) {
+        if (err) throw err;
+        console.log(result);
+    });
+    return response.send('Record succesfully showed')
+})
 
-// app.get('/showGrades2', function(request, response) {
-//     con.query("SELECT value FROM Grade WHERE weight >= 2", function(err, result, fields) {
-//         if (err) throw err;
-//         console.log(result);
-//     });
-//     return response.send('R')
-// })
+app.get('/removeAllCars', function(request, response) {
+    con.query("DELETE FROM USER;", function(err, result, fields) {
+        if (err) throw err;
+        console.log(result);
+    });
+    return response.send('Records succesfully deleted')
+});
 
-// app.get('/addPupilSubject/:id_pupil/:id_subject', function(request, response) {
-//     var sql = "INSERT INTO Pupil_Subject (pupil_id, subject_id) VALUES (?)";
-//     var values = [request.params.id_pupil, request.params.id_subject];
-//     con.query(sql, [values], function(err, result) {
-//         if (err) throw err;
-//         console.log("Number of records inserted: " + result.affectedRows);
-//     });
-//     return response.send('Record succesfully inserted')
-// })
+app.get('/addRental/<carId>/<userId>', function(request, response) {
+    var sql = "INSERT INTO RENTAL (CAR_ID, USER_ID) VALUES (?)";
+    var values = [request.params.carId, request.params.userId];
+    con.query(sql, [values], function(err, result) {
+        if (err) throw err;
+        console.log("Number of records inserted: " + result.affectedRows);
+    });
+    return response.send('Rental succesfully inserted')
+})
 
-// app.get('/showPupilSubject', function(request, response) {
-//     con.query("SELECT * FROM Pupil_Subject", function(err, result, fields) {
-//         if (err) throw err;
-//         console.log(result);
-//     });
-//     return response.send('Record succesfully inserted')
-// })
+app.get('/showRentals', function(request, response) {
+    con.query("SELECT * FROM RENTAL", function(err, result, fields) {
+        if (err) throw err;
+        console.log(result);
+    });
+    return response.send('Record succesfully showed')
+})
 
-// app.get('/addPupilTeacher/:id_pupil/:id_teacher', function(request, response) {
-//     var sql = "INSERT INTO Pupil_Subject (pupil_id, teacher_id) VALUES (?)";
-//     var values = [request.params.id_pupil, request.params.teacher_id];
-//     con.query(sql, [values], function(err, result) {
-//         if (err) throw err;
-//         console.log("Number of records inserted: " + result.affectedRows);
-//     });
-//     return response.send('Record succesfully inserted')
-// })
-
-// app.get('/showPupilTeacher', function(request, response) {
-//     con.query("SELECT * FROM Pupil_Subject", function(err, result, fields) {
-//         if (err) throw err;
-//         console.log(result);
-//     });
-//     return response.send('Record succesfully inserted')
-// })
-
-
-
-// app.get('/removePupil/:id', (request, response) => {
-//     let id = request.params.id
-//     let sql = 'DELETE FROM Pupil WHERE pupil_id = ?';
-//     con.query(sql, id, (err, result) => {
-//         if (err) throw err
-//         console.log("pupil removed")
-//         return response.send('Pupil removed successfully')
-//     })
-// })
-// app.get('/removeTeacher/:id', (request, response) => {
-//     let id = request.params.id
-//     let sql = 'DELETE FROM Teacher WHERE teacher_id = ?';
-//     con.query(sql, id, (err, result) => {
-//         if (err) throw err
-//         console.log("teacher removed")
-//         return response.send('Teachr removed successfully')
-//     })
-// })
-
+app.get('/removeAllRentals', function(request, response) {
+    con.query("DELETE FROM RENTAL;", function(err, result, fields) {
+        if (err) throw err;
+        console.log(result);
+    });
+    return response.send('Records succesfully deleted')
+});
 
 
 
